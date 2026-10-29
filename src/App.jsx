@@ -126,6 +126,48 @@ function App() {
           </div>
         </div>
       )}
+
+      <hr className="border-slate-300 my-8" />
+
+      <div className="flex gap-4 items-center">
+        <div className="bg-white rounded-lg p-4 flex-1">
+          <input
+            type="text"
+            className="p-2 bg-slate-100 rounded-lg w-full text-lg text-center mb-4"
+            value="English"
+          />
+          <textarea className="h-48 text-xl outline-none bg-slate-100 focus:bg-slate-200 w-full rounded-lg p-2"></textarea>
+        </div>
+        <div className="w-8">
+          <button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"
+              />
+            </svg>
+          </button>
+        </div>
+        <div className="bg-white rounded-lg p-4 flex-1">
+          <input
+            type="text"
+            className="p-2 bg-slate-100 rounded-lg w-full text-lg text-center mb-4"
+            value="Traditional Chinese"
+          />
+          <textarea className="h-48 text-xl outline-none bg-slate-100 focus:bg-slate-200 w-full rounded-lg p-2"></textarea>
+        </div>
+      </div>
+      <button className="bg-slate-700 text-white text-lg w-full mt-4 py-3 px-8 rounded-lg shadow-lg hover:bg-slate-800 transition">
+        Translate
+      </button>
     </div>
   );
 }

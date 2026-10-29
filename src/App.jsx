@@ -21,17 +21,40 @@ function App() {
           },
           body: JSON.stringify({
             model: "openrouter/free",
+            response_format: {
+              type: "json_schema",
+              json_schema: {
+                name: "vocabulary",
+                strict: true,
+                schema: {
+                  type: "object",
+                  properties: {
+                    phonetic: {
+                      type: "string",
+                      description: "IPA pronunciation",
+                    },
+                    meaning: {
+                      type: "string",
+                      description: "Meaning of the word in Traditional Chinese",
+                    },
+                    partOfSpeech: {
+                      type: "string",
+                      description: "English part of speech",
+                    },
+                    example: {
+                      type: "string",
+                      description: "One short english example sentence",
+                    },
+                  },
+                  required: ["phonetic", "meaning", "partOfSpeech", "example"],
+                  additionalProperties: false,
+                },
+              },
+            },
             messages: [
               {
                 role: "system",
-                content: `You are an English teacher, return only in JSON format, and one JSON object. Format: 
-              {
-                "phonetic": "<phonetic>",
-                "meaning": "<meaning in traditional chinese>",
-                "partOfSpeech": "<partOfSpeech>",
-                "example": "<example>"
-              }
-              `,
+                content: `You are an English teacher`,
               },
               {
                 role: "user",

@@ -19,8 +19,19 @@ function App() {
           model: "openrouter/free",
           messages: [
             {
+              role: "system",
+              content: `You are an English teacher, return only in JSON format, and one JSON object. Format: 
+              {
+                "phonetic": "<phonetic>",
+                "meaning": "<meaning in traditional chinese>",
+                "partOfSpeech": "<partOfSpeech>",
+                "example": "<example>"
+              }
+              `,
+            },
+            {
               role: "user",
-              content: `You are an English teacher, please give me the definition of the following vocabulary: ${word}`,
+              content: word,
             },
           ],
         }),

@@ -6,6 +6,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Translation: 4 fields
+  const [langFrom, setLangFrom] = useState("English");
+  const [langTo, setLangTo] = useState("Traditional Chinese");
+  const [originalContent, setOriginalContent] = useState("");
+  const [translatedContent, setTranslatedContent] = useState("");
+
   const search = async () => {
     setIsLoading(true);
 
@@ -134,9 +140,14 @@ function App() {
           <input
             type="text"
             className="p-2 bg-slate-100 rounded-lg w-full text-lg text-center mb-4"
-            value="English"
+            value={langFrom}
+            onInput={(e) => setLangFrom(e.target.value)}
           />
-          <textarea className="h-48 text-xl outline-none bg-slate-100 focus:bg-slate-200 w-full rounded-lg p-2"></textarea>
+          <textarea
+            className="h-48 text-xl outline-none bg-slate-100 focus:bg-slate-200 w-full rounded-lg p-2"
+            value={originalContent}
+            onInput={(e) => setOriginalContent(e.target.value)}
+          ></textarea>
         </div>
         <div className="w-8">
           <button>
@@ -160,9 +171,14 @@ function App() {
           <input
             type="text"
             className="p-2 bg-slate-100 rounded-lg w-full text-lg text-center mb-4"
-            value="Traditional Chinese"
+            value={langTo}
+            onInput={(e) => setLangTo(e.target.value)}
           />
-          <textarea className="h-48 text-xl outline-none bg-slate-100 focus:bg-slate-200 w-full rounded-lg p-2"></textarea>
+          <textarea
+            className="h-48 text-xl outline-none bg-slate-100 focus:bg-slate-200 w-full rounded-lg p-2"
+            value={translatedContent}
+            onInput={(e) => setTranslatedContent(e.target.value)}
+          ></textarea>
         </div>
       </div>
       <button className="bg-slate-700 text-white text-lg w-full mt-4 py-3 px-8 rounded-lg shadow-lg hover:bg-slate-800 transition">

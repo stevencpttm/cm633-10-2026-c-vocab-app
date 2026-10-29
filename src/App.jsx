@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 
-// !!!UNSAFE!!!
-const API_KEY = "";
-
 function App() {
   const [word, setWord] = useState("");
-  const [definition, setDefinition] = useState("");
+  const [definition, setDefinition] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const search = async () => {
+    setIsLoading(true);
+
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
         headers: {
-          Authorization: "Bearer " + API_KEY,
+          Authorization: "Bearer " + import.meta.env.VITE_LLM_API_KEY,
         },
         body: JSON.stringify({
           model: "openrouter/free",
@@ -29,6 +29,8 @@ function App() {
     const data = await response.json();
 
     setDefinition(data.choices[0].message.content);
+
+    setIsLoading(false);
   };
 
   return (
@@ -37,23 +39,27 @@ function App() {
       <div className="flex gap-2">
         <input
           type="text"
-          className="bg-white w-full rounded-lg p-4 text-2xl"
+          className="bg-white w-full rounded-lg p-4 text-2xl disabled:bg-gray-100"
           value={word}
           onInput={(e) => {
             setWord(e.target.value);
           }}
+          disabled={isLoading}
         />
         <button
-          className="bg-black px-4 py-2 text-2xl text-white rounded-lg"
+          className="bg-black px-4 py-2 text-2xl text-white rounded-lg disabled:bg-gray-400"
           onClick={search}
+          disabled={isLoading}
         >
-          Query
+          {isLoading ? "Loading..." : "Query"}
         </button>
       </div>
-      <div className="bg-white p-4 rounded-lg mt-4">
-        <h4 className="italic text-slate-400">Definition</h4>
-        <p className="text-left my-4">{definition}</p>
-      </div>
+      {definition && (
+        <div className="bg-white p-4 rounded-lg mt-4">
+          <h4 className="italic text-slate-400">Definition</h4>
+          <p className="text-left my-4">{definition}</p>
+        </div>
+      )}
     </div>
   );
 }

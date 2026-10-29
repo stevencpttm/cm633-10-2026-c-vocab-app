@@ -60,6 +60,24 @@ function App() {
           <p className="text-left my-4">{definition}</p>
         </div>
       )}
+      <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="bg-white rounded-lg p-2">
+          <strong>音標</strong>
+          <p>word.phonetic</p>
+        </div>
+        <div className="bg-white rounded-lg p-2">
+          <strong>意思</strong>
+          <p>word.meaning</p>
+        </div>
+        <div className="bg-white rounded-lg p-2">
+          <strong>詞性</strong>
+          <p>word.partOfSpeech</p>
+        </div>
+        <div className="bg-white rounded-lg p-2">
+          <strong>例句</strong>
+          <p>word.example</p>
+        </div>
+      </div>
     </div>
   );
 }

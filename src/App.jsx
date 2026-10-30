@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function App() {
   const [word, setWord] = useState("");
@@ -6,11 +6,17 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const queryField = useRef(null);
+
   // Translation: 4 fields
   const [langFrom, setLangFrom] = useState("English");
   const [langTo, setLangTo] = useState("Traditional Chinese");
   const [originalContent, setOriginalContent] = useState("");
   const [translatedContent, setTranslatedContent] = useState("");
+
+  const [isTranslationLoading, setIsTranslationLoading] = useState(false);
+
+  const [side, setSide] = useState(1);
 
   const search = async () => {
     setIsLoading(true);
@@ -84,6 +90,57 @@ function App() {
     setIsLoading(false);
   };
 
+  const swap = () => {
+    setLangFrom(langTo);
+    setLangTo(langFrom);
+    setOriginalContent(translatedContent);
+    setTranslatedContent("");
+
+    setSide(side + 1);
+  };
+
+  useEffect(() => {
+    if (originalContent === "") {
+      return;
+    }
+
+    translate();
+    console.log("side");
+  }, [side]);
+
+  const translate = async () => {
+    setIsTranslationLoading(true);
+
+    const response = await fetch(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + import.meta.env.VITE_LLM_API_KEY,
+        },
+        body: JSON.stringify({
+          model: "openrouter/free",
+          messages: [
+            {
+              role: "user",
+              content: `Translate the following content from [${langFrom}] to [${langTo}]: ${originalContent}`,
+            },
+          ],
+        }),
+      },
+    );
+
+    const data = await response.json();
+
+    setTranslatedContent(data.choices[0].message.content);
+
+    setIsTranslationLoading(false);
+  };
+
+  useEffect(() => {
+    queryField.current.focus();
+  }, []);
+
   return (
     <div className="p-4 text-center min-h-screen bg-slate-200">
       <h1 className="text-center text-4xl font-bold my-8">Vocab App</h1>
@@ -95,6 +152,7 @@ function App() {
           onInput={(e) => {
             setWord(e.target.value);
           }}
+          ref={queryField}
           disabled={isLoading}
         />
         <button
@@ -150,7 +208,7 @@ function App() {
           ></textarea>
         </div>
         <div className="w-8">
-          <button>
+          <button onClick={swap}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -181,7 +239,11 @@ function App() {
           ></textarea>
         </div>
       </div>
-      <button className="bg-slate-700 text-white text-lg w-full mt-4 py-3 px-8 rounded-lg shadow-lg hover:bg-slate-800 transition">
+      <button
+        className="bg-slate-700 text-white text-lg w-full mt-4 py-3 px-8 rounded-lg shadow-lg hover:bg-slate-800 transition disabled:bg-slate-400"
+        onClick={translate}
+        disabled={isTranslationLoading}
+      >
         Translate
       </button>
     </div>

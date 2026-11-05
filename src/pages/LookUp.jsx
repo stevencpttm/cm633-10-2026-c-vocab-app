@@ -5,6 +5,7 @@ function LookUp() {
   const [definition, setDefinition] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [bookmarks, setBookmarks] = useState([]);
 
   const queryField = useRef(null);
 
@@ -83,7 +84,27 @@ function LookUp() {
 
   useEffect(() => {
     queryField.current.focus();
+
+    const bookmarkedStorage = localStorage.getItem("bookmarked");
+
+    if (bookmarkedStorage) {
+      try {
+        const bookmarkedWords = JSON.parse(bookmarkedStorage);
+        setBookmarks(bookmarkedWords);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }, []);
+
+  const bookmark = () => {
+    // what word to bookmark: word (state)
+    setBookmarks([...bookmarks, word]);
+  };
+
+  useEffect(() => {
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+  }, [bookmarks]);
 
   return (
     <>
@@ -114,24 +135,32 @@ function LookUp() {
       )}
 
       {definition && (
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          <div className="bg-white rounded-lg p-2">
-            <strong>音標</strong>
-            <p>{definition.phonetic}</p>
+        <>
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="bg-white rounded-lg p-2">
+              <strong>音標</strong>
+              <p>{definition.phonetic}</p>
+            </div>
+            <div className="bg-white rounded-lg p-2">
+              <strong>意思</strong>
+              <p>{definition.meaning}</p>
+            </div>
+            <div className="bg-white rounded-lg p-2">
+              <strong>詞性</strong>
+              <p>{definition.partOfSpeech}</p>
+            </div>
+            <div className="bg-white rounded-lg p-2">
+              <strong>例句</strong>
+              <p>{definition.example}</p>
+            </div>
           </div>
-          <div className="bg-white rounded-lg p-2">
-            <strong>意思</strong>
-            <p>{definition.meaning}</p>
-          </div>
-          <div className="bg-white rounded-lg p-2">
-            <strong>詞性</strong>
-            <p>{definition.partOfSpeech}</p>
-          </div>
-          <div className="bg-white rounded-lg p-2">
-            <strong>例句</strong>
-            <p>{definition.example}</p>
-          </div>
-        </div>
+          <button
+            className="bg-indigo-500 text-white px-4 py-2 rounded-lg mt-8"
+            onClick={bookmark}
+          >
+            Bookmark
+          </button>
+        </>
       )}
     </>
   );

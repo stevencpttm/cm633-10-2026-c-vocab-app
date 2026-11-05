@@ -93,17 +93,14 @@ function LookUp() {
   }, []);
 
   const bookmark = () => {
-    // what word to bookmark: word (state)
-    setBookmarks([...bookmarks, word]);
-  };
-
-  useEffect(() => {
     if (isBookmarked(word)) {
       removeBookmark(word);
+      setBookmarks(getBookmarks());
     } else {
       addBookmark(word);
+      setBookmarks(getBookmarks());
     }
-  }, [bookmarks]);
+  };
 
   return (
     <>

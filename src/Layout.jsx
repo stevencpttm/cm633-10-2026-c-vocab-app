@@ -11,7 +11,9 @@ function Layout() {
         <li className="py-2 flex-1 rounded">Bookmark</li>
       </ul>
 
-      <Outlet />
+      <div className="my-8 mx-4">
+        <Outlet />
+      </div>
     </div>
   );
 }

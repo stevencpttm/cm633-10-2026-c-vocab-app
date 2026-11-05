@@ -4,12 +4,18 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 
 import "./index.css";
 import Layout from "./Layout.jsx";
+import LookUp from "./pages/LookUp.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [],
+    children: [
+      {
+        path: "/",
+        element: <LookUp />,
+      },
+    ],
   },
 ]);
 

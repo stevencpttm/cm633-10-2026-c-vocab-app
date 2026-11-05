@@ -1,16 +1,8 @@
 import { useState, useEffect } from "react";
+import { getBookmarks } from "../bookmarks";
 
 function Bookmark() {
-  const [words, setWords] = useState([
-    "apple",
-    "orange",
-    "keyboard",
-    "mouse",
-    "water",
-    "monitor",
-    "paper",
-    "speaker",
-  ]);
+  const [words, setWords] = useState(getBookmarks());
 
   return (
     <>

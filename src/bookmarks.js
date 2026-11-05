@@ -18,7 +18,7 @@ export function getBookmarks() {
 export function addBookmark(word) {
   const bookmarks = getBookmarks();
 
-  if (bookmarks.includes(word)) {
+  if (bookmarks.includes(word) || word.trim() === "") {
     return;
   }
 

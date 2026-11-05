@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
 import Layout from "./Layout.jsx";
 import LookUp from "./pages/LookUp.jsx";
+import Translator from "./pages/Translator.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <LookUp />,
+      },
+      {
+        path: "/translator",
+        element: <Translator />,
       },
     ],
   },

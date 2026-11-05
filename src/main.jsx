@@ -6,6 +6,7 @@ import "./index.css";
 import Layout from "./Layout.jsx";
 import LookUp from "./pages/LookUp.jsx";
 import Translator from "./pages/Translator.jsx";
+import Bookmark from "./pages/Bookmark.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/translator",
         element: <Translator />,
+      },
+      {
+        path: "/bookmark",
+        element: <Bookmark />,
       },
     ],
   },

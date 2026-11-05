@@ -1,11 +1,17 @@
 import { useState, useEffect, useRef } from "react";
+import {
+  getBookmarks,
+  addBookmark,
+  isBookmarked,
+  removeBookmark,
+} from "../bookmarks";
 
 function LookUp() {
   const [word, setWord] = useState("");
   const [definition, setDefinition] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [bookmarks, setBookmarks] = useState([]);
+  const [bookmarks, setBookmarks] = useState(getBookmarks());
 
   const queryField = useRef(null);
 
@@ -84,17 +90,6 @@ function LookUp() {
 
   useEffect(() => {
     queryField.current.focus();
-
-    const bookmarkedStorage = localStorage.getItem("bookmarked");
-
-    if (bookmarkedStorage) {
-      try {
-        const bookmarkedWords = JSON.parse(bookmarkedStorage);
-        setBookmarks(bookmarkedWords);
-      } catch (e) {
-        console.error(e);
-      }
-    }
   }, []);
 
   const bookmark = () => {
@@ -103,7 +98,11 @@ function LookUp() {
   };
 
   useEffect(() => {
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+    if (isBookmarked(word)) {
+      removeBookmark(word);
+    } else {
+      addBookmark(word);
+    }
   }, [bookmarks]);
 
   return (
@@ -158,7 +157,7 @@ function LookUp() {
             className="bg-indigo-500 text-white px-4 py-2 rounded-lg mt-8"
             onClick={bookmark}
           >
-            Bookmark
+            {isBookmarked(word) ? "Remove from Bookmark" : "Bookmark"}
           </button>
         </>
       )}

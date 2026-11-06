@@ -4,6 +4,7 @@ import { getBookmarks } from "../bookmarks";
 function Bookmark() {
   const [words, setWords] = useState(getBookmarks());
   const [story, setStory] = useState("");
+  const [audioUrl, setAudioUrl] = useState(null);
 
   const generate = async () => {
     const response = await fetch(
@@ -30,6 +31,30 @@ function Bookmark() {
     setStory(data.choices[0].message.content);
   };
 
+  const generateSpeech = async () => {
+    const response = await fetch(
+      `https://api.deepgram.com/v1/speak?model=aura-2-thalia-en`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Token " + import.meta.env.VITE_DEEPGRAM_API,
+        },
+        body: JSON.stringify({ text: stripHtml(story) }),
+      },
+    );
+
+    const audio = await response.blob();
+
+    setAudioUrl(URL.createObjectURL(audio));
+  };
+
+  const stripHtml = (htmlString) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/html");
+    return doc.body.textContent || "";
+  };
+
   return (
     <>
       <ul className="grid grid-cols-3 gap-2 mb-8">
@@ -53,6 +78,15 @@ function Bookmark() {
         className="bg-slate-100 p-4 text-base mt-4 rounded-lg text-left border border-slate-300"
         dangerouslySetInnerHTML={{ __html: story }}
       ></div>
+      <button
+        className="bg-purple-600 text-white px-4 py-2 text-center rounded-lg text-lg hover:scale-105 hover:bg-purple-700 transition shadow mt-4"
+        onClick={generateSpeech}
+      >
+        Generate Speech
+      </button>
+      <div className="my-8">
+        {audioUrl && <audio src={audioUrl} controls className="w-full" />}
+      </div>
     </>
   );
 }
